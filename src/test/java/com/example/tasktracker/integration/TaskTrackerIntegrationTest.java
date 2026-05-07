@@ -12,6 +12,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Integration tests for validating
+ * end-to-end API functionality.
+ *
+ * Tests application info retrieval,
+ * project operations, and validation handling.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class TaskTrackerIntegrationTest {
@@ -19,6 +26,11 @@ class TaskTrackerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Verifies application information endpoint.
+     *
+     * @throws Exception if request execution fails
+     */
     @Test
     void shouldReturnApplicationInfo() throws Exception {
         mockMvc.perform(get("/api/info"))
@@ -27,6 +39,12 @@ class TaskTrackerIntegrationTest {
                 .andExpect(jsonPath("$.appVersion").value("1.0.0"));
     }
 
+    /**
+     * Verifies project creation
+     * and project listing endpoints.
+     *
+     * @throws Exception if request execution fails
+     */
     @Test
     void shouldCreateProjectAndListProjects() throws Exception {
         mockMvc.perform(post("/api/projects")
@@ -39,6 +57,12 @@ class TaskTrackerIntegrationTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * Verifies validation error handling
+     * for invalid user creation requests.
+     *
+     * @throws Exception if request execution fails
+     */
     @Test
     void shouldReturnValidationErrorForInvalidUser() throws Exception {
         mockMvc.perform(post("/api/users")

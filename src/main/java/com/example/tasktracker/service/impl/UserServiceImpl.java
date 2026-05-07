@@ -17,16 +17,33 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service implementation for managing user operations.
+ *
+ * Handles user creation, retrieval,
+ * update, and deletion.
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Constructs a UserServiceImpl with required repository.
+     *
+     * @param userRepository repository for user persistence
+     */
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Creates a new user.
+     *
+     * @param request user creation request
+     * @return created user response
+     */
     @Override
     public UserResponse create(UserRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -39,6 +56,11 @@ public class UserServiceImpl implements UserService {
         return mapToResponse(userRepository.save(user));
     }
 
+    /**
+     * Retrieves all users.
+     *
+     * @return list of user responses
+     */
     @Override
     @Transactional(readOnly = true)
     public List<UserResponse> getAll() {
@@ -49,6 +71,15 @@ public class UserServiceImpl implements UserService {
         return responses;
     }
 
+    /**
+     * Retrieves paginated users.
+     *
+     * @param page page number
+     * @param size page size
+     * @param sortBy field to sort by
+     * @param sortDir sorting direction
+     * @return paginated user response
+     */
     @Override
     @Transactional(readOnly = true)
     public PagedResponse<UserResponse> getAll(int page, int size, String sortBy, String sortDir) {
@@ -61,12 +92,25 @@ public class UserServiceImpl implements UserService {
         return buildPage(content, result);
     }
 
+    /**
+     * Retrieves a user by ID.
+     *
+     * @param id user identifier
+     * @return user response
+     */
     @Override
     @Transactional(readOnly = true)
     public UserResponse getById(Long id) {
         return mapToResponse(findUser(id));
     }
 
+    /**
+     * Updates an existing user.
+     *
+     * @param id user identifier
+     * @param request updated user details
+     * @return updated user response
+     */
     @Override
     public UserResponse update(Long id, UserRequest request) {
         AppUser user = findUser(id);
@@ -79,18 +123,35 @@ public class UserServiceImpl implements UserService {
         return mapToResponse(userRepository.save(user));
     }
 
+    /**
+     * Deletes a user by ID.
+     *
+     * @param id user identifier
+     */
     @Override
     public void delete(Long id) {
         AppUser user = findUser(id);
         userRepository.delete(user);
     }
 
+    /**
+     * Finds a user by ID.
+     *
+     * @param id user identifier
+     * @return user entity
+     */
     private AppUser findUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found with id: " + id));
     }
 
+    /**
+     * Maps user entity to response DTO.
+     *
+     * @param user user entity
+     * @return user response
+     */
     private UserResponse mapToResponse(AppUser user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
@@ -100,6 +161,13 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
+    /**
+     * Builds paginated user response.
+     *
+     * @param content user response content
+     * @param page page metadata
+     * @return paged response
+     */
     private PagedResponse<UserResponse> buildPage(List<UserResponse> content, Page<AppUser> page) {
         PagedResponse<UserResponse> response = new PagedResponse<UserResponse>();
         response.setContent(content);

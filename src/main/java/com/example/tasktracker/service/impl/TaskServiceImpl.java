@@ -23,6 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service implementation for managing task operations.
+ *
+ * Handles task creation, retrieval, update,
+ * deletion, and filtering operations.
+ */
 @Service
 @Transactional
 public class TaskServiceImpl implements TaskService {
@@ -32,6 +38,14 @@ public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
     private final TaskProperties taskProperties;
 
+    /**
+     * Constructs a TaskServiceImpl with required dependencies.
+     *
+     * @param taskRepository repository for task persistence
+     * @param projectRepository repository for project persistence
+     * @param userRepository repository for user persistence
+     * @param taskProperties task configuration properties
+     */
     public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository,
                            UserRepository userRepository, TaskProperties taskProperties) {
         this.taskRepository = taskRepository;
@@ -40,6 +54,12 @@ public class TaskServiceImpl implements TaskService {
         this.taskProperties = taskProperties;
     }
 
+    /**
+     * Creates a new task.
+     *
+     * @param request task creation request
+     * @return created task response
+     */
     @Override
     public TaskResponse create(TaskRequest request) {
         Project project = findProject(request.getProjectId());
@@ -56,6 +76,13 @@ public class TaskServiceImpl implements TaskService {
         return TaskMapper.toResponse(taskRepository.save(task));
     }
 
+    /**
+     * Retrieves tasks with optional filters.
+     *
+     * @param status task status filter
+     * @param projectId project identifier filter
+     * @return list of task responses
+     */
     @Override
     @Transactional(readOnly = true)
     public List<TaskResponse> getAll(TaskStatus status, Long projectId) {
@@ -77,6 +104,17 @@ public class TaskServiceImpl implements TaskService {
         return responses;
     }
 
+    /**
+     * Retrieves paginated tasks with optional filters.
+     *
+     * @param status task status filter
+     * @param projectId project identifier filter
+     * @param page page number
+     * @param size page size
+     * @param sortBy field to sort by
+     * @param sortDir sorting direction
+     * @return paginated task response
+     */
     @Override
     @Transactional(readOnly = true)
     public PagedResponse<TaskResponse> getAll(TaskStatus status, Long projectId, int page, int size, String sortBy, String sortDir) {
@@ -110,12 +148,25 @@ public class TaskServiceImpl implements TaskService {
         return response;
     }
 
+    /**
+     * Retrieves a task by ID.
+     *
+     * @param id task identifier
+     * @return task response
+     */
     @Override
     @Transactional(readOnly = true)
     public TaskResponse getById(Long id) {
         return TaskMapper.toResponse(findTask(id));
     }
 
+    /**
+     * Updates an existing task.
+     *
+     * @param id task identifier
+     * @param request updated task details
+     * @return updated task response
+     */
     @Override
     public TaskResponse update(Long id, TaskRequest request) {
         Task task = findTask(id);
@@ -128,12 +179,23 @@ public class TaskServiceImpl implements TaskService {
         return TaskMapper.toResponse(taskRepository.save(task));
     }
 
+    /**
+     * Deletes a task by ID.
+     *
+     * @param id task identifier
+     */
     @Override
     public void delete(Long id) {
         Task task = findTask(id);
         taskRepository.delete(task);
     }
 
+    /**
+     * Retrieves tasks by project ID.
+     *
+     * @param projectId project identifier
+     * @return list of task responses
+     */
     @Override
     @Transactional(readOnly = true)
     public List<TaskResponse> getByProjectId(Long projectId) {
@@ -145,11 +207,23 @@ public class TaskServiceImpl implements TaskService {
         return responses;
     }
 
+    /**
+     * Finds a project by ID.
+     *
+     * @param id project identifier
+     * @return project entity
+     */
     private Project findProject(Long id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
     }
 
+    /**
+     * Finds an assignee by ID.
+     *
+     * @param assigneeId user identifier
+     * @return user entity
+     */
     private AppUser findAssignee(Long assigneeId) {
         if (assigneeId == null) {
             return null;
@@ -158,11 +232,23 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + assigneeId));
     }
 
+    /**
+     * Finds a task by ID.
+     *
+     * @param id task identifier
+     * @return task entity
+     */
     private Task findTask(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
     }
 
+    /**
+     * Resolves task priority.
+     *
+     * @param priority provided priority
+     * @return resolved priority value
+     */
     private Priority resolvePriority(Priority priority) {
         if (priority != null) {
             return priority;

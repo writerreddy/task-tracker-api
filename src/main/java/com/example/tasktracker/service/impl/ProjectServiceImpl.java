@@ -19,6 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service implementation for managing project operations.
+ *
+ * Handles project creation, retrieval, update,
+ * deletion, and associated task retrieval.
+ */
 @Service
 @Transactional
 public class ProjectServiceImpl implements ProjectService {
@@ -26,11 +32,23 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
 
+    /**
+     * Constructs a ProjectServiceImpl with required repositories.
+     *
+     * @param projectRepository repository for project persistence
+     * @param taskRepository repository for task persistence
+     */
     public ProjectServiceImpl(ProjectRepository projectRepository, TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
+    /**
+     * Creates a new project.
+     *
+     * @param request project creation request
+     * @return created project response
+     */
     @Override
     public ProjectResponse create(ProjectRequest request) {
         if (projectRepository.existsByName(request.getName())) {
@@ -42,6 +60,11 @@ public class ProjectServiceImpl implements ProjectService {
         return mapToResponse(projectRepository.save(project));
     }
 
+    /**
+     * Retrieves all projects.
+     *
+     * @return list of project responses
+     */
     @Override
     @Transactional(readOnly = true)
     public List<ProjectResponse> getAll() {
@@ -52,6 +75,15 @@ public class ProjectServiceImpl implements ProjectService {
         return responses;
     }
 
+    /**
+     * Retrieves paginated project data.
+     *
+     * @param page page number
+     * @param size page size
+     * @param sortBy field to sort by
+     * @param sortDir sorting direction
+     * @return paginated project response
+     */
     @Override
     @Transactional(readOnly = true)
     public PagedResponse<ProjectResponse> getAll(int page, int size, String sortBy, String sortDir) {
@@ -64,12 +96,25 @@ public class ProjectServiceImpl implements ProjectService {
         return buildPage(content, result);
     }
 
+    /**
+     * Retrieves a project by ID.
+     *
+     * @param id project identifier
+     * @return project response
+     */
     @Override
     @Transactional(readOnly = true)
     public ProjectResponse getById(Long id) {
         return mapToResponse(findProject(id));
     }
 
+    /**
+     * Updates an existing project.
+     *
+     * @param id project identifier
+     * @param request updated project details
+     * @return updated project response
+     */
     @Override
     public ProjectResponse update(Long id, ProjectRequest request) {
         Project project = findProject(id);
@@ -81,12 +126,23 @@ public class ProjectServiceImpl implements ProjectService {
         return mapToResponse(projectRepository.save(project));
     }
 
+    /**
+     * Deletes a project by ID.
+     *
+     * @param id project identifier
+     */
     @Override
     public void delete(Long id) {
         Project project = findProject(id);
         projectRepository.delete(project);
     }
 
+    /**
+     * Retrieves all tasks associated with a project.
+     *
+     * @param projectId project identifier
+     * @return list of task responses
+     */
     @Override
     @Transactional(readOnly = true)
     public List<TaskResponse> getTasksByProjectId(Long projectId) {
@@ -98,12 +154,24 @@ public class ProjectServiceImpl implements ProjectService {
         return responses;
     }
 
+    /**
+     * Finds a project by ID.
+     *
+     * @param id project identifier
+     * @return project entity
+     */
     private Project findProject(Long id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Project not found with id: " + id));
     }
 
+    /**
+     * Maps project entity to response DTO.
+     *
+     * @param project project entity
+     * @return project response
+     */
     private ProjectResponse mapToResponse(Project project) {
         ProjectResponse response = new ProjectResponse();
         response.setId(project.getId());
@@ -113,6 +181,13 @@ public class ProjectServiceImpl implements ProjectService {
         return response;
     }
 
+    /**
+     * Builds paginated project response.
+     *
+     * @param content project response content
+     * @param page page metadata
+     * @return paged response
+     */
     private PagedResponse<ProjectResponse> buildPage(List<ProjectResponse> content, Page<Project> page) {
         PagedResponse<ProjectResponse> response = new PagedResponse<ProjectResponse>();
         response.setContent(content);

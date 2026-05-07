@@ -8,7 +8,7 @@ This project manages:
 - Users
 - Tasks
 
-It supports CRUD operations, validation, exception handling, OpenAPI documentation, Swagger UI, unit tests, integration tests, Docker support, pagination, and filtering.
+It supports CRUD operations, validation, exception handling, OpenAPI documentation, Swagger UI, unit tests, integration tests, pagination, and filtering.
 
 ---
 
@@ -23,32 +23,6 @@ It supports CRUD operations, validation, exception handling, OpenAPI documentati
 - MockMvc Integration Tests
 - OpenAPI 3.0
 - Swagger UI
-- Docker
-
----
-
-# Features
-
-## Required Features
-
-- Spring Boot REST API
-- H2 in-memory database
-- Proper JPA entity relationships
-- Layered architecture (Controller → Service → Repository)
-- DTO validation using Bean Validation
-- Global exception handling
-- Externalized configuration via `application.properties`
-- OpenAPI YAML documentation
-- Unit tests using JUnit 5 and Mockito
-- README with setup and API usage instructions
-
-## Bonus Features
-
-- Swagger UI
-- Docker support
-- Integration tests with MockMvc
-- Pagination and sorting
-- Filtering tasks by status and project
 
 ---
 
@@ -60,29 +34,8 @@ task-tracker-api/
 ├── pom.xml
 ├── README.md
 ├── openapi.yaml
-├── Dockerfile
-├── docker-compose.yml
 └── .gitignore
 ````
-
----
-
-# Configuration
-
-Application properties are externalized in:
-
-```properties
-src/main/resources/application.properties
-```
-
-Important properties:
-
-```properties
-app.name=Task Tracker API
-app.version=1.0.0
-task.default-priority=MEDIUM
-pagination.default-page-size=10
-```
 
 ---
 
@@ -111,13 +64,6 @@ mvn -version
 mvn clean test
 mvn spring-boot:run
 ```
-
-Application runs at:
-
-```text
-http://localhost:8080
-```
-
 ---
 
 # Swagger UI
@@ -274,16 +220,6 @@ Included tests:
 * Integration tests using MockMvc
 * Validation tests
 * Exception handling tests
-
----
-
-# Docker Support
-
-Build and run using Docker:
-
-```bash
-docker compose up --build
-```
 
 ---
 
