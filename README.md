@@ -1,122 +1,81 @@
+
 # Task Tracker API
 
-A production-style Spring Boot REST API for the SymphonyAI take-home assignment using **Java 8** and the preferred Spring Boot backend stack. It manages Projects, Users, and Tasks with validation, structured error handling, H2 support, OpenAPI documentation, Swagger UI, unit tests, integration tests, Docker support, and optional pagination/sorting.
+A RESTful Spring Boot application built for the SymphonyAI Media take-home assignment.
 
-## Tech stack
+This project manages:
+- Projects
+- Users
+- Tasks
+
+It supports CRUD operations, validation, exception handling, OpenAPI documentation, Swagger UI, unit tests, integration tests, Docker support, pagination, and filtering.
+
+---
+
+# Tech Stack
 
 - Java 8
-- Spring Boot 2.7.18
-- Spring Web
-- Spring Data JPA / Hibernate
-- H2 in-memory database
-- Bean Validation
-- JUnit 5 + Mockito
-- Spring Boot Test + MockMvc
-- OpenAPI 3.0 YAML
-- Swagger UI via springdoc-openapi
-- Docker + docker-compose
+- Spring Boot 2.7
+- Spring Data JPA (Hibernate)
+- H2 In-Memory Database
 - Maven
+- JUnit 5 + Mockito
+- MockMvc Integration Tests
+- OpenAPI 3.0
+- Swagger UI
+- Docker
 
-## Assignment coverage
+---
 
-### Required
+# Features
 
-- Spring Boot project with Maven
-- In-memory H2 database
-- JPA/Hibernate entities and relationships
-- Service layer separated from controllers
-- Externalized config from `application.properties`
-- `/api/info` endpoint
-- DTO validation
+## Required Features
+
+- Spring Boot REST API
+- H2 in-memory database
+- Proper JPA entity relationships
+- Layered architecture (Controller → Service → Repository)
+- DTO validation using Bean Validation
 - Global exception handling
+- Externalized configuration via `application.properties`
+- OpenAPI YAML documentation
 - Unit tests using JUnit 5 and Mockito
-- `openapi.yaml` in project root
-- `README.md` with clear setup and curl examples
+- README with setup and API usage instructions
 
-### Bonus included
+## Bonus Features
 
-- Dockerfile
-- docker-compose.yml
-- Integration tests with `@SpringBootTest` and `MockMvc`
-- Pagination and sorting support on list endpoints
-- Swagger UI auto-generated from the application
+- Swagger UI
+- Docker support
+- Integration tests with MockMvc
+- Pagination and sorting
+- Filtering tasks by status and project
 
-## Project structure
+---
+
+# Project Structure
 
 ```text
-task-tracker-api-java8-top-tier/
+task-tracker-api/
+├── src/
+├── pom.xml
+├── README.md
+├── openapi.yaml
 ├── Dockerfile
 ├── docker-compose.yml
-├── pom.xml
-├── openapi.yaml
-├── README.md
-├── src/main/java/com/example/tasktracker
-├── src/main/resources/application.properties
-└── src/test/java/com/example/tasktracker
+└── .gitignore
+````
+
+---
+
+# Configuration
+
+Application properties are externalized in:
+
+```properties
+src/main/resources/application.properties
 ```
 
-## Prerequisites
-
-Install these tools:
-
-- JDK 8
-- Maven 3.8+
-- IntelliJ IDEA
-- Docker Desktop (optional, for container run)
-
-Check local setup:
-
-```bash
-java -version
-mvn -version
-docker --version
-```
-
-## Open in IntelliJ
-
-1. Extract the ZIP.
-2. Open IntelliJ IDEA.
-3. Click **Open** and choose the folder containing `pom.xml`.
-4. Let IntelliJ import Maven dependencies.
-5. Set **Project SDK = Java 8**.
-6. Run `TaskTrackerApiApplication`.
-
-## Run locally
-
-```bash
-mvn clean test
-mvn spring-boot:run
-```
-
-Available URLs:
-
-- API: [http://localhost:8080](http://localhost:8080)
-- H2 Console: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
-- Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
-## H2 login
-
-- JDBC URL: `jdbc:h2:mem:taskdb`
-- Username: `sa`
-- Password: leave empty
-
-## Run with Docker
-
-Build and run:
-
-```bash
-docker compose up --build
-```
-
-Or with older Docker Compose:
-
-```bash
-docker-compose up --build
-```
-
-## Configuration properties
-
-The project reads these from `application.properties`:
+Important properties:
 
 ```properties
 app.name=Task Tracker API
@@ -125,75 +84,182 @@ task.default-priority=MEDIUM
 pagination.default-page-size=10
 ```
 
-## Endpoints
+---
 
-### Info
-- `GET /api/info`
+# Run the Application
 
-### Projects
-- `POST /api/projects`
-- `GET /api/projects`
-- `GET /api/projects/{id}`
-- `PUT /api/projects/{id}`
-- `DELETE /api/projects/{id}`
-- `GET /api/projects/{id}/tasks`
+## Prerequisites
 
-### Users
-- `POST /api/users`
-- `GET /api/users`
-- `GET /api/users/{id}`
-- `PUT /api/users/{id}`
-- `DELETE /api/users/{id}`
+Install:
 
-### Tasks
-- `POST /api/tasks`
-- `GET /api/tasks`
-- `GET /api/tasks/{id}`
-- `PUT /api/tasks/{id}`
-- `DELETE /api/tasks/{id}`
+* Java 8+
+* Maven
+* IntelliJ IDEA (recommended)
 
-## Pagination and sorting
+Verify installation:
 
-List endpoints support optional pagination and sorting.
+```bash
+java -version
+mvn -version
+```
+
+---
+
+## Run Locally
+
+```bash
+mvn clean test
+mvn spring-boot:run
+```
+
+Application runs at:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# Swagger UI
+
+Open Swagger UI:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+---
+
+# H2 Database Console
+
+Open:
+
+```text
+http://localhost:8080/h2-console
+```
+
+Use:
+
+```text
+JDBC URL: jdbc:h2:mem:taskdb
+Username: sa
+Password:
+```
+
+(leave password empty)
+
+---
+
+# API Endpoints
+
+## Info
+
+| Method | Endpoint    |
+| ------ | ----------- |
+| GET    | `/api/info` |
+
+---
+
+## Projects
+
+| Method | Endpoint                   |
+| ------ | -------------------------- |
+| POST   | `/api/projects`            |
+| GET    | `/api/projects`            |
+| GET    | `/api/projects/{id}`       |
+| PUT    | `/api/projects/{id}`       |
+| DELETE | `/api/projects/{id}`       |
+| GET    | `/api/projects/{id}/tasks` |
+
+---
+
+## Users
+
+| Method | Endpoint          |
+| ------ | ----------------- |
+| POST   | `/api/users`      |
+| GET    | `/api/users`      |
+| GET    | `/api/users/{id}` |
+| PUT    | `/api/users/{id}` |
+| DELETE | `/api/users/{id}` |
+
+---
+
+## Tasks
+
+| Method | Endpoint          |
+| ------ | ----------------- |
+| POST   | `/api/tasks`      |
+| GET    | `/api/tasks`      |
+| GET    | `/api/tasks/{id}` |
+| PUT    | `/api/tasks/{id}` |
+| DELETE | `/api/tasks/{id}` |
+
+---
+
+# Pagination and Filtering
 
 Examples:
 
 ```bash
-curl "http://localhost:8080/api/projects?page=0&size=5&sortBy=name&sortDir=asc"
-curl "http://localhost:8080/api/users?page=0&size=10&sortBy=name&sortDir=desc"
-curl "http://localhost:8080/api/tasks?status=IN_PROGRESS&projectId=1&page=0&size=10&sortBy=dueDate&sortDir=asc"
+GET /api/projects?page=0&size=5
+
+GET /api/users?page=0&size=10&sortBy=name&sortDir=asc
+
+GET /api/tasks?status=IN_PROGRESS
+
+GET /api/tasks?projectId=1
 ```
 
-If `page` and `size` are omitted, the API returns the normal non-paginated list for backward compatibility.
+---
 
-## Sample curl requests
+# Sample API Requests
 
-### Create project
+## Create Project
 
 ```bash
-curl -X POST http://localhost:8080/api/projects   -H "Content-Type: application/json"   -d '{"name":"Media Platform","description":"Task tracker backend"}'
+curl -X POST http://localhost:8080/api/projects \
+-H "Content-Type: application/json" \
+-d '{
+  "name":"Media Platform",
+  "description":"Task tracking backend"
+}'
 ```
 
-### Create user
+---
+
+## Create User
 
 ```bash
-curl -X POST http://localhost:8080/api/users   -H "Content-Type: application/json"   -d '{"name":"Alice","email":"alice@example.com","role":"DEVELOPER"}'
+curl -X POST http://localhost:8080/api/users \
+-H "Content-Type: application/json" \
+-d '{
+  "name":"Alice",
+  "email":"alice@example.com",
+  "role":"DEVELOPER"
+}'
 ```
 
-### Create task
+---
+
+## Create Task
 
 ```bash
-curl -X POST http://localhost:8080/api/tasks   -H "Content-Type: application/json"   -d '{"title":"Implement dashboard","status":"IN_PROGRESS","priority":"HIGH","projectId":1,"assigneeId":1,"dueDate":"2026-05-20"}'
+curl -X POST http://localhost:8080/api/tasks \
+-H "Content-Type: application/json" \
+-d '{
+  "title":"Implement Dashboard",
+  "status":"IN_PROGRESS",
+  "priority":"HIGH",
+  "projectId":1,
+  "assigneeId":1,
+  "dueDate":"2026-05-20"
+}'
 ```
 
-### Filter tasks
+---
 
-```bash
-curl "http://localhost:8080/api/tasks?status=TODO"
-curl "http://localhost:8080/api/tasks?projectId=1"
-```
-
-## Tests
+# Testing
 
 Run all tests:
 
@@ -201,33 +267,69 @@ Run all tests:
 mvn test
 ```
 
-Included test types:
+Included tests:
 
-- Service-layer unit tests for Project, User, and Task services
-- Integration tests using `MockMvc`
-- Validation error checks
-- `/api/info` contract check
+* Service layer unit tests
+* Mockito-based tests
+* Integration tests using MockMvc
+* Validation tests
+* Exception handling tests
 
-## Design decisions
+---
 
-- DTOs are used to separate persistence models from API contracts.
-- External configuration is injected rather than hardcoded, matching the assignment requirement.
-- Default task priority is resolved from `task.default-priority`.
-- Pagination is optional and uses `page`, `size`, `sortBy`, and `sortDir` query parameters.
-- Swagger UI is included to improve reviewer experience.
+# Docker Support
 
-## Submission checklist
+Build and run using Docker:
 
-Before pushing to GitHub:
+```bash
+docker compose up --build
+```
+
+---
+
+# OpenAPI Specification
+
+The OpenAPI YAML file is available at:
+
+```text
+openapi.yaml
+```
+
+Swagger documentation is auto-generated from the application.
+
+---
+
+# Design Highlights
+
+* Clean layered architecture
+* DTO-based request/response handling
+* Enum-based task status and priority
+* Externalized configuration
+* Structured error responses
+* Optional pagination and sorting
+* Production-style logging support
+
+---
+
+# Submission Checklist
+
+Before submission:
 
 ```bash
 mvn clean test
 ```
 
-Also verify:
+Verify:
 
-- Java 8 is selected
-- `openapi.yaml` is in the root
-- `README.md` is updated
-- `.idea/` and `target/` are not committed
-- API starts successfully in IntelliJ and with Maven
+* Application starts successfully
+* Swagger UI works
+* H2 console works
+* All tests pass
+* `openapi.yaml` exists at root
+* `.idea/` and `target/` are excluded from Git
+
+---
+
+# Author
+
+Deepak M
