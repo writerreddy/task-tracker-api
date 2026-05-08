@@ -1,5 +1,6 @@
 package com.example.tasktracker.controller;
 
+import jdk.internal.vm.annotation.Hidden;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,8 +17,9 @@ public class HomeController {
      *
      * @return a welcome message with API endpoint details
      */
+    @Hidden
     @GetMapping("/")
     public String home() {
-        return "Task Tracker API is running. Use /swagger-ui.html or /api/tasks";
+        return "Task Tracker API is running. Use /swagger-ui.html";
     }
 }
