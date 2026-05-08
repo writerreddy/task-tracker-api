@@ -1,14 +1,24 @@
-
+````markdown
 # Task Tracker API
 
 A RESTful Spring Boot application built for the SymphonyAI Media take-home assignment.
 
 This project manages:
+
 - Projects
 - Users
 - Tasks
 
-It supports CRUD operations, validation, exception handling, OpenAPI documentation, Swagger UI, unit tests, integration tests, pagination, and filtering.
+It supports:
+
+- CRUD operations
+- Validation
+- Global exception handling
+- OpenAPI documentation
+- Swagger UI
+- Unit testing
+- Integration testing
+- Pagination and filtering
 
 ---
 
@@ -39,9 +49,7 @@ task-tracker-api/
 
 ---
 
-# Run the Application
-
-## Prerequisites
+# Prerequisites
 
 Install:
 
@@ -58,31 +66,50 @@ mvn -version
 
 ---
 
-## Run Locally
+# Clone the Repository
+
+```bash
+git clone https://github.com/writerreddy/task-tracker-api.git
+cd task-tracker-api
+```
+
+---
+
+# Run Locally
+
+## Run Tests
+
+Executes all unit and integration tests.
 
 ```bash
 mvn clean test
+```
+
+---
+
+## Start the Application
+
+Starts the Spring Boot application locally.
+
+```bash
 mvn spring-boot:run
 ```
+
 ---
 
 # Swagger UI
 
-Open Swagger UI:
+Open in browser:
 
-```text
-http://localhost:8080/swagger-ui.html
-```
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ---
 
 # H2 Database Console
 
-Open:
+Open in browser:
 
-```text
-http://localhost:8080/h2-console
-```
+[http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 
 Use:
 
@@ -235,37 +262,9 @@ Swagger documentation is auto-generated from the application.
 
 ---
 
-# Design Highlights
-
-* Clean layered architecture
-* DTO-based request/response handling
-* Enum-based task status and priority
-* Externalized configuration
-* Structured error responses
-* Optional pagination and sorting
-* Production-style logging support
-
----
-
-# Submission Checklist
-
-Before submission:
-
-```bash
-mvn clean test
-```
-
-Verify:
-
-* Application starts successfully
-* Swagger UI works
-* H2 console works
-* All tests pass
-* `openapi.yaml` exists at root
-* `.idea/` and `target/` are excluded from Git
-
----
-
 # Author
 
 Deepak M
+
+```
+```
